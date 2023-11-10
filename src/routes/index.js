@@ -44,9 +44,11 @@ setInterval(() => {
 /*
 db.ref('contacts').on('value', (snapshot) => {
     data = snapshot.val();
-    aWss.clients.forEach((client) => {
-        client.send(data);
-    })
+    if (data) {
+        aWss.clients.forEach((client) => {
+            client.send(JSON.stringify(data));
+        })
+    }
 });
 */
 module.exports = router;
