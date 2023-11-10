@@ -7,11 +7,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     {{!-- BOOTSTRAP CDN --}}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lumen/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css">
     <link rel="stylesheet" href="main.css">
+    <script>
+    <!-- This is the connection to the socket -->
+    let webSocket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+    let el;
+
+    webSocket.onmessage = (event) => {
+      el = document.getElementById('time'); 
+      el.innerHTML = 'Current time on server is: ' + event.data;
+    };
+  </script>
+  
 </head>
 
 <body>
+    <p id="time"></p>
     <div class="container p-4">
         <div class="row">
             {{{ body }}}
