@@ -2,8 +2,23 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const morgan = require('morgan');
+const exWs = require('express-ws');
+const expressWs = exWs(express());
+const app = expressWs.app;
 
-const app = express();
+// Socket
+const aWss  = expressWs.getWss();
+global.aWss = aWss; // Mala practica pero no encontre otra forma de usarlo en routes
+app.ws('/', function(ws, req) {
+  console.log('Socket Connected');
+
+  ws.onmessage = function(msg) {
+    console.log(msg.data);
+    aWss.clients.forEach(function (client) {
+      client.send(msg.data);
+    });
+  };
+});
 
 // Settings
 app.set('port', process.env.PORT || 3000);
